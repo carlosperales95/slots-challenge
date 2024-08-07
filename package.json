@@ -1,0 +1,21 @@
+{
+  "name": "slot-tech-test-master",
+  "version": "1.0.0",
+  "description": "Test",
+  "main": "app.js",
+  "dependencies": {
+    "pixi-game": "^0.1.11",
+    "pixi.js": "^4.8.4",
+    "scale-to-window-pixi": "^1.2.0"
+  },
+  "devDependencies": {
+    "browser-sync": "^2.26.3",
+    "pixi.js": "^4.8.4"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "browser-sync -s -w -f '*.js'"
+  },
+  "author": "Carlos Perales",
+  "license": "ISC"
+}
