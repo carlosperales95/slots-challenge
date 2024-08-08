@@ -105,14 +105,14 @@ export default class UIResources {
         this.leftArrow = this.makeImageButton(
             './assets/images/leftArrow.png',
             330,
-            310,
+            305,
             0.05
         );
 
         this.rightArrow = this.makeImageButton(
             './assets/images/rightArrow.png',
             410,
-            310,
+            305,
             0.05
         );
 
