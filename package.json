@@ -14,7 +14,6 @@
   },
   "scripts": {
     "start": "browser-sync -s -w -f '*.js'",
-    "build": "npm build"
   },
   "author": "Carlos Perales",
   "license": "ISC"
