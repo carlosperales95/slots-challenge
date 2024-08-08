@@ -25,6 +25,16 @@ change the board size or add extra features like free spins or bonus rounds in t
 ![alt text](cover.png)
 
 [<kbd> <br> HOSTED ON NETLIFY <br> </kbd>](https://cp-slot-challenge.netlify.app/)
+##### To run locally
+Install dependencies:
+```
+npm install
+```
+
+Run server
+```
+npm run start
+```
 
 # Approach
 
