@@ -13,8 +13,13 @@
     "pixi.js": "^4.8.4"
   },
   "scripts": {
-    "start": "browser-sync -s -w -f '*.js'"
+    "copy:html": "copyfiles -u 1 ./src/*.html public",
+    "copy": "npm-run-all --parallel copy:*",
+    "serve": "browser-sync start --server public --files public",
+    "start": "npm-run-all copy --parallel watch serve",
+    "build": "npm-run-all copy:html build:*"
   },
   "author": "Carlos Perales",
   "license": "ISC"
 }
+
