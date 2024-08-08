@@ -13,13 +13,8 @@
     "pixi.js": "^4.8.4"
   },
   "scripts": {
-    "build": "npm run build:server",
-		"build:server": "tsc",
-		"build:watch": "tsc --watch",
-		"watch": "npm run build && npm run serve:fixtures",
-		"serve:fixtures": "node dist/bin test/fixtures -w --no-open"
+    "start": "browser-sync -s -w -f '*.js'"
   },
   "author": "Carlos Perales",
   "license": "ISC"
 }
-
