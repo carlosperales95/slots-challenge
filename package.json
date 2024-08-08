@@ -13,11 +13,11 @@
     "pixi.js": "^4.8.4"
   },
   "scripts": {
-    "copy:html": "copyfiles -u 1 ./src/*.html public",
-    "copy": "npm-run-all --parallel copy:*",
-    "serve": "browser-sync start --server public --files public",
-    "start": "npm-run-all copy --parallel watch serve",
-    "build": "npm-run-all copy:html build:*"
+    "build": "npm run build:server",
+		"build:server": "tsc",
+		"build:watch": "tsc --watch",
+		"watch": "npm run build && npm run serve:fixtures",
+		"serve:fixtures": "node dist/bin test/fixtures -w --no-open"
   },
   "author": "Carlos Perales",
   "license": "ISC"
