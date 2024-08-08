@@ -86,8 +86,8 @@ export default class UIResources {
         this.SYMBOL_SIZE = 80;
         this.MARGIN = 50;
 
-        let graphicsOne = this.makeGraphicsArea(0xdaa520, 100, 295, 100);
-        let graphicsTwo = this.makeGraphicsArea(0xdaa520, 360, 295, 50);
+        let graphicsOne = this.makeGraphicsArea(0xdaa520, 100, 310, 100);
+        let graphicsTwo = this.makeGraphicsArea(0xdaa520, 360, 310, 50);
 
         let winLabel = new PIXI.Text('WIN', this.style);
         let stakeLabel = new PIXI.Text('STAKE', this.style);
@@ -105,14 +105,14 @@ export default class UIResources {
         this.leftArrow = this.makeImageButton(
             './assets/images/leftArrow.png',
             330,
-            295,
+            310,
             0.05
         );
 
         this.rightArrow = this.makeImageButton(
             './assets/images/rightArrow.png',
             410,
-            295,
+            310,
             0.05
         );
 
