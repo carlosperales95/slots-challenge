@@ -13,7 +13,7 @@
     "pixi.js": "^4.8.4"
   },
   "scripts": {
-    "start": "browser-sync -s -w -f '*.js'",
+    "start": "browser-sync -s -w -f '*.js'"
   },
   "author": "Carlos Perales",
   "license": "ISC"
