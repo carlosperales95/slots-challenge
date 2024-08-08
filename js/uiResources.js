@@ -86,8 +86,8 @@ export default class UIResources {
         this.SYMBOL_SIZE = 80;
         this.MARGIN = 50;
 
-        let graphicsOne = this.makeGraphicsArea(0xdaa520, 100, 296, 100);
-        let graphicsTwo = this.makeGraphicsArea(0xdaa520, 360, 296, 50);
+        let graphicsOne = this.makeGraphicsArea(0xdaa520, 100, 295, 100);
+        let graphicsTwo = this.makeGraphicsArea(0xdaa520, 360, 295, 50);
 
         let winLabel = new PIXI.Text('WIN', this.style);
         let stakeLabel = new PIXI.Text('STAKE', this.style);
@@ -105,14 +105,14 @@ export default class UIResources {
         this.leftArrow = this.makeImageButton(
             './assets/images/leftArrow.png',
             330,
-            299,
+            295,
             0.05
         );
 
         this.rightArrow = this.makeImageButton(
             './assets/images/rightArrow.png',
             410,
-            299,
+            295,
             0.05
         );
 
@@ -126,7 +126,7 @@ export default class UIResources {
         this.repeatButton = this.makeImageButton(
             './assets/images/BTN_Spin_active.png',
             220,
-            299,
+            295,
             0.90
         );
 
@@ -175,7 +175,7 @@ export default class UIResources {
 
         this.balanceText = new PIXI.Text(`${playerResources.balance}`, this.style);
         this.balanceText.x = 535;
-        this.balanceText.y = 7;
+        this.balanceText.y = 5;
 
         this.footerContainer = new PIXI.Container();
         this.footerContainer.x = 0;
