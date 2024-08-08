@@ -1,19 +1,20 @@
 import Resources from "./resources.js";
 import UIResources from "./uiResources.js";
 
-export default class GameResources {
+export default class SlotsGame {
 
     playerResources;
     uiResources;
-    paytable;
-    running;
+    payTable;
+    spinning;
 
     constructor() {
         this.playerResources = new Resources();
-        this.uiResources = new UIResources("Carlitoslots", 5, 3);
+        
+        this.spinning = false;
         this.isGameOver = false;
 
-        this.paytable = {
+        this.payTable = {
             Q: [5, 10, 25],
             A: [5, 10, 25],
             K: [5, 10, 25],
@@ -30,56 +31,54 @@ export default class GameResources {
             M3: [1, 3, 5],
             M4: [1, 3, 5],
             M5: [1, 3, 5],
+            9: [1, 3, 5],
+            10: [1, 3, 5],
         };
 
-        this.running = false;
-    }
-
-    // Initializes UI - TODO: break down into smaller more manageable code
-    init = () => {
         // Init UI
-        this.uiResources.init(this.playerResources);
+        this.uiResources = new UIResources("PLACE YOUR BET", 5, 3, this.playerResources);
 
-        //check for event on click on rightArrow button and call AddStake function
+        // Event listeners for UI buttons
+        // Check for event on click on rightArrow button and call AddStake function
         this.uiResources.rightArrow.addListener("pointerdown", () => this.increaseStakes());
 
-        //check for event on click on leftArrow button and call MinusStake function
+        // Check for event on click on leftArrow button and call MinusStake function
         this.uiResources.leftArrow.addListener("pointerdown", () => this.reduceStakes());
 
-        //check for event on spin button
-        this.uiResources.buttonActive.addListener('pointerdown', () => {
-            this.spinRound();
-        });
+        // Check for event on spin button
+        this.uiResources.buttonActive.addListener('pointerdown', () => this.spinRound());
 
-        this.uiResources.repeatButton.addListener("pointerdown", () => {
-            this.restartGame();
-        });
+        // Check for event on new game button
+        this.uiResources.repeatButton.addListener("pointerdown", () => this.restartGame());
+    }
 
-        this.uiResources.app.ticker.add(this.uiResources.reelAnimateUpdate);
-    };
-
+    // Spin Action logic
     spinRound = () => {
-        console.log("spinROund");
-        if(this.running || this.isGameOver) return;
+        // If solts are spinning or game is over cannot place bet
+        if(this.spinning || this.isGameOver) return;
+        // If balance is bigger than remaining amount, auto-reduce stakes to max value possible
+        while(this.playerResources.balance < this.playerResources.stake) this.reduceStakes();
+        
         this.startPlay();
-        //Reduce balance on click depending on bet amount
+        // Reduce balance on click depending on bet amount
         this.playerResources.reduceBalance();
-        this.uiResources.balanceText.text = this.playerResources.balance;
+        this.uiResources.changeUIText(this.playerResources.balance, this.uiResources.balanceText);
     }
 
-
+    // Restarts game UI and player values
     restartGame = () => {
-        console.log("repeat");
         this.uiResources.app.destroy();
-        this.uiResources = new UIResources("Carlitoslots", 5, 3);
         this.playerResources = new Resources();
-        this.init();
+        this.uiResources = new UIResources("PLACE YOUR BET", 5, 3, this.playerResources);
+        this.isGameOver = false;
     }
 
-    //Function to start playing.
+    // Function to start
+    // Moves reels and calls tweening from UI
     startPlay = () => {
-        if (this.running || this.isGameOver) return;
-        this.running = true;
+        if (this.spinning || this.isGameOver) return;
+        this.uiResources.changeUIText("SPINNING ...", this.uiResources.headerText);
+        this.spinning = true;
         this.resetWin();
 
         for (let i = 0; i < this.uiResources.reels.length; i++) {
@@ -97,32 +96,25 @@ export default class GameResources {
         }
     }
 
-    //Reels done handler.
+    // Reels done handler.
     reelsComplete = () => {
-        this.running = false;
+        this.spinning = false;
         this.checkWin();
-        console.log(this.uiResources.app.stage.children);
     }
-
-    // Backout function from tweenjs.
-    // https://github.com/CreateJS/TweenJS/blob/master/src/tweenjs/Ease.js
-    backout(amount) {
-        return (t) => --t * t * ((amount + 1) * t + amount) + 1;
-    };
 
     // Decreases stake in player resources and updates text
     reduceStakes() {
         this.playerResources.minusStake();
         this.uiResources.footerContainer.addChild(this.uiResources.stackText);
         //update  PIXI text on screen
-        this.uiResources.stackText.text = this.playerResources.stake;
+        this.uiResources.changeUIText(this.playerResources.stake, this.uiResources.stackText);
     };
 
     // Increases stake in player resources and updates text
     increaseStakes() {
         this.playerResources.addStake();
         // pdate  PIXI stack text on screen
-        this.uiResources.stackText.text = this.playerResources.stake;
+        this.uiResources.changeUIText(this.playerResources.stake, this.uiResources.stackText);
     }
 
     // Checks the winning combos in the resulting matrix after roll
@@ -131,27 +123,26 @@ export default class GameResources {
     checkWin() {
         // Getting the resulting sprites in Array
         const resultMatrix = this.getResultMatrix();
-        // console.log(resultMatrix);
-
         const winningCombos = this.checkCombos(resultMatrix);
+        // Reduce winning combos array into payTable values with combo lookup
+        // Sums all values for each payline into total won
+        const winAmount = winningCombos.reduce((sum, combo) => sum + this.payTable[combo[0]][combo[1] - 3], 0);
 
-        // Reduce winningcombos array into paytable values with combo lookup
-        const wins = winningCombos.reduce((sum, combo) => sum + this.paytable[combo[0]][combo[1] - 3], 0);
-        // console.log(winningCombos);
-        // console.log(wins);
-
-        if(wins > 0) {
+        // If amount won is bigger than 0 update balance and win texts
+        if(winAmount > 0) {
             // Update balance and screenText
-            this.playerResources.addBalance(wins);
-            this.uiResources.balanceText.text = this.playerResources.balance;
-            this.uiResources.winText.text = `+${this.playerResources.win}`;
+            this.playerResources.addBalance(winAmount);
+            this.uiResources.changeUIText(this.playerResources.balance, this.uiResources.balanceText);
+            this.uiResources.changeUIText(`+${this.playerResources.win}`, this.uiResources.winText);
         }
 
         // Check for gameOver
         if(this.playerResources.balance <= 0) {
-            this.uiResources.headerText.text = "GAME OVER!";
+            this.uiResources.changeUIText(" GAME OVER !", this.uiResources.headerText);
             this.isGameOver = true;
+            return;
         }
+        this.uiResources.changeUIText("PLACE YOUR BET", this.uiResources.headerText);
     };
 
     // Converts Sprite texture matrix to 3 x 5 array of tile names
@@ -162,7 +153,6 @@ export default class GameResources {
             const r = this.uiResources.reels[i];
             for(let n = 0; n < r.symbols.length; n++) {
                 const collides = this.collisionResponse(r.symbols[n], this.uiResources.mid);
-                // console.log(collides, r.symbols[n].texture.textureCacheIds[0].split("/").pop().replace('.png', ''));
                 if(collides !== undefined)
                     resultMatrix[collides].push(r.symbols[n].texture.textureCacheIds[0].split("/").pop().replace('.png', ''));
             }
@@ -175,7 +165,7 @@ export default class GameResources {
     // Then filters array to keep only the leftmost combo value
     // Map the filtered key/value to [key, value]
     checkCombos(resultMatrix) {
-        console.log(resultMatrix);
+        console.log("matrix lines: ", resultMatrix);
         let paylines = [
             [ // Top Line
                 resultMatrix[0][0],
@@ -200,14 +190,14 @@ export default class GameResources {
             ],
             [  // TL-BR Diagonal Line
                 resultMatrix[0][0],
-                resultMatrix[0][1],
+                resultMatrix[1][1],
                 resultMatrix[1][2],
                 resultMatrix[2][3],
                 resultMatrix[2][4]
             ],
             [ // BL-TR Diagonal Line
                 resultMatrix[2][0],
-                resultMatrix[2][1],
+                resultMatrix[1][1],
                 resultMatrix[1][2],
                 resultMatrix[0][3],
                 resultMatrix[0][4]
@@ -247,7 +237,7 @@ export default class GameResources {
     // Sets player win balance to 0 and updates text
     resetWin() {
         this.playerResources.win = 0;
-        this.uiResources.winText.text = this.playerResources.win;
+        this.uiResources.changeUIText(this.playerResources.win, this.uiResources.winText);
     }
     
     // Collision function of objects with bounds relative to each other
@@ -263,4 +253,9 @@ export default class GameResources {
         if (aBox.y - bBox.y <= -50) return 0; // top
         if (aBox.y - bBox.y >= 50) return 2; // bottom
     }
+
+    // Backout function from tweenjs.
+    // https://github.com/CreateJS/TweenJS/blob/master/src/tweenjs/Ease.js
+    backout = (amount) => (t) => --t * t * ((amount + 1) * t + amount) + 1;
+
 }

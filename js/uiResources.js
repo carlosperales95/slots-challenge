@@ -25,27 +25,27 @@ export default class UIResources {
     MARGIN;
     tweening;
 
-    constructor(title, columns, rows) {
+    constructor(title, columns, rows, playerResources) {
         
         this.slotTextures = [
-            // PIXI.Texture.fromImage("./assets/images/Q.png"),
-            // PIXI.Texture.fromImage("./assets/images/M5.png"),
-            // PIXI.Texture.fromImage("./assets/images/M4.png"),
-            // PIXI.Texture.fromImage("./assets/images/M3.png"),
-            // PIXI.Texture.fromImage("./assets/images/M2.png"),
-            // PIXI.Texture.fromImage("./assets/images/M1.png"),
-            // PIXI.Texture.fromImage("./assets/images/K.png"),
-            // PIXI.Texture.fromImage("./assets/images/J.png"),
+            PIXI.Texture.fromImage("./assets/images/Q.png"),
+            PIXI.Texture.fromImage("./assets/images/M5.png"),
+            PIXI.Texture.fromImage("./assets/images/M4.png"),
+            PIXI.Texture.fromImage("./assets/images/M3.png"),
+            PIXI.Texture.fromImage("./assets/images/M2.png"),
+            PIXI.Texture.fromImage("./assets/images/M1.png"),
+            PIXI.Texture.fromImage("./assets/images/K.png"),
+            PIXI.Texture.fromImage("./assets/images/J.png"),
             PIXI.Texture.fromImage("./assets/images/H6.png"),
             PIXI.Texture.fromImage("./assets/images/H5.png"),
             PIXI.Texture.fromImage("./assets/images/H4.png"),
-            // PIXI.Texture.fromImage("./assets/images/H3.png"),
-            // PIXI.Texture.fromImage("./assets/images/H2.png"),
-            // PIXI.Texture.fromImage("./assets/images/H1.png"),
+            PIXI.Texture.fromImage("./assets/images/H3.png"),
+            PIXI.Texture.fromImage("./assets/images/H2.png"),
+            PIXI.Texture.fromImage("./assets/images/H1.png"),
             PIXI.Texture.fromImage("./assets/images/BONUS.png"),
-            // PIXI.Texture.fromImage("./assets/images/A.png"),
-            // PIXI.Texture.fromImage("./assets/images/10.png"),
-            // PIXI.Texture.fromImage("./assets/images/9.png")
+            PIXI.Texture.fromImage("./assets/images/A.png"),
+            PIXI.Texture.fromImage("./assets/images/10.png"),
+            PIXI.Texture.fromImage("./assets/images/9.png")
         ];
 
         this.app = new PIXI.Application(640, 360, {
@@ -80,25 +80,14 @@ export default class UIResources {
         this.rows = rows;
 
         document.body.appendChild(this.app.view);
-    }
+        // Initializes UI - TODO: break down into smaller more manageable code
 
-    // Initializes UI - TODO: break down into smaller more manageable code
-    init = (playerResources) => {
         this.REEL_WIDTH = 90;
         this.SYMBOL_SIZE = 80;
         this.MARGIN = 50;
 
         let graphicsOne = this.makeGraphicsArea(0xdaa520, 100, 296, 100);
-        // graphicsOne.lineStyle(2, 0xdaa520, 1);
-        // graphicsOne.beginFill(0xFF00BB, 0.25);
-        // graphicsOne.drawRoundedRect(100, 296, 100, 35, 15);
-        // graphicsOne.endFill();
-
         let graphicsTwo = this.makeGraphicsArea(0xdaa520, 360, 296, 50);
-        // graphicsTwo.lineStyle(2, 0xdaa520, 1);
-        // graphicsTwo.beginFill(0xFF00BB, 0.25);
-        // graphicsTwo.drawRoundedRect(360, 296, 50, 35, 15);
-        // graphicsTwo.endFill();
 
         let winLabel = new PIXI.Text('WIN', this.style);
         let stakeLabel = new PIXI.Text('STAKE', this.style);
@@ -221,9 +210,13 @@ export default class UIResources {
             this.buttonActive,
             this.stackText,
             this.winText);
-
+        
+        // Listen for animate update.
         this.app.ticker.add(this.appAnimateUpdate);
+        this.app.ticker.add(this.reelAnimateUpdate);
     };
+
+    changeUIText = (str, obj) => obj.text = str;
 
     // Creates Image button and adds to buttonsHolder
     makeImageButton = (image, x, y, scale) => {
@@ -279,8 +272,7 @@ export default class UIResources {
             }
             this.reels.push(reel);
         }
-    }
-
+    };
 
     reelAnimateUpdate = (delta) => {
         //Update the slots.
@@ -304,7 +296,7 @@ export default class UIResources {
                 }
             }
         }
-    }
+    };
 
     appAnimateUpdate = (delta) => {
         const now = Date.now();
@@ -327,6 +319,7 @@ export default class UIResources {
         }
     }
 
+    // Very simple tweening utility function. This should be replaced with a proper tweening library in a real product.
     tweenTo = (object, property, target, time, easing, onchange, oncomplete) => {
         const tween = {
             object,
@@ -346,5 +339,4 @@ export default class UIResources {
 
     // lerp funtion.
     lerp = (a1, a2, t) => a1 * (1 - t) + a2 * t;
-
 }

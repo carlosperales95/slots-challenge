@@ -1,9 +1,4 @@
-import GameResources from "./gameResources.js";
-
-let gameResources = new GameResources();
-let app = gameResources.uiResources.app;
-
-// document.body.appendChild(app.view);
+import SlotsGame from "./SlotsGame.js";
 
 PIXI.loader
     .add("Q", "./assets/images/Q.png")
@@ -35,9 +30,5 @@ PIXI.loader
 
 //onAssetsLoaded handler builds the example.
 function onAssetsLoaded() {
-    gameResources.init();
-    // Listen for animate update
+    let game = new SlotsGame();
 }
-
-// Listen for animate update.
-app.ticker.add(gameResources.uiResources.appAnimateUpdate);
