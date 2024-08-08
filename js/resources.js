@@ -4,7 +4,7 @@ export default class Resources {
     win;
 
     constructor(balance, stake, win) {
-        this.balance = 5;
+        this.balance = 50;
         this.stake = 1;
         this.win = 0;
     }
