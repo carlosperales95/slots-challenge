@@ -14,7 +14,8 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "browser-sync -s -w -f '*.js'"
+    "start": "browser-sync -s -w -f '*.js'",
+    "build": "npm run build"
   },
   "author": "Carlos Perales",
   "license": "ISC"
