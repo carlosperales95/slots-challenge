@@ -24,6 +24,8 @@ change the board size or add extra features like free spins or bonus rounds in t
 
 ![alt text](cover.png)
 
+[<kbd> <br> Hosted on Netlify <br> </kbd>][https://cp-slot-challenge.netlify.app/]
+
 # Approach
 
 ## First approach
