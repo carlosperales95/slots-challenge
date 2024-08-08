@@ -86,8 +86,8 @@ export default class UIResources {
         this.SYMBOL_SIZE = 80;
         this.MARGIN = 50;
 
-        let graphicsOne = this.makeGraphicsArea(0xdaa520, 100, 305, 100);
-        let graphicsTwo = this.makeGraphicsArea(0xdaa520, 360, 305, 50);
+        let graphicsOne = this.makeGraphicsArea(0xdaa520, 100, 302, 100);
+        let graphicsTwo = this.makeGraphicsArea(0xdaa520, 360, 302, 50);
 
         let winLabel = new PIXI.Text('WIN', this.style);
         let stakeLabel = new PIXI.Text('STAKE', this.style);
