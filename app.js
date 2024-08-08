@@ -1,4 +1,4 @@
-import SlotsGame from "./SlotsGame.js";
+import SlotsGame from "./js/SlotsGame.js";
 
 PIXI.loader
     .add("Q", "./assets/images/Q.png")
