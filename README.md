@@ -1,5 +1,5 @@
 # slots-challenge
-
+# Challenge Description
 Create a slot prototype which is 5 reels wide and 3 symbols tall using any game
 framework or rendering engine that you like (for example PixiJS, Phaser, Cocos
 Creator, etc..) using either Typescript or Javascript
