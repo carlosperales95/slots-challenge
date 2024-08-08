@@ -33,7 +33,7 @@ Install dependencies:
 npm install
 ```
 
-Run server
+Run server:
 ```
 npm run start
 ```
